@@ -1,0 +1,343 @@
+{
+  "entorno": "http://127.0.0.1:8080",
+  "casos": [
+    {
+      "caso": "login administrador",
+      "http": 200,
+      "ms": 848,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "login encargado",
+      "http": 200,
+      "ms": 85,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "login estudiante",
+      "http": 200,
+      "ms": 93,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "login docente",
+      "http": 200,
+      "ms": 112,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "límites por perfil",
+      "http": 200,
+      "ms": 20,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "reporte sin autenticación",
+      "http": 401,
+      "ms": 7,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "reporte con rol insuficiente",
+      "http": 403,
+      "ms": 101,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "docente sin acceso administrativo",
+      "http": 403,
+      "ms": 7,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "crear categoría",
+      "http": 201,
+      "ms": 101,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "crear equipo 1",
+      "http": 201,
+      "ms": 51,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "editar equipo",
+      "http": 200,
+      "ms": 64,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "código de equipo único",
+      "http": 409,
+      "ms": 16,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "catálogo filtrado",
+      "http": 200,
+      "ms": 68,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "detalle equipo",
+      "http": 200,
+      "ms": 9,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "estudiante excede máximo",
+      "http": 400,
+      "ms": 53,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "docente excede máximo",
+      "http": 400,
+      "ms": 20,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "docente puede solicitar 30 días",
+      "http": 201,
+      "ms": 43,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "docente cancela solicitud propia",
+      "http": 200,
+      "ms": 48,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "crear usuario estudiante",
+      "http": 201,
+      "ms": 108,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "login nuevo estudiante",
+      "http": 200,
+      "ms": 94,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "solicitante sin acceso administrativo",
+      "http": 403,
+      "ms": 6,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "rechazar fechas incoherentes",
+      "http": 400,
+      "ms": 30,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "crear solicitud para cancelar",
+      "http": 201,
+      "ms": 20,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "cancelar solicitud propia",
+      "http": 200,
+      "ms": 22,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "cancelar solicitud dos veces",
+      "http": 409,
+      "ms": 26,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "crear solicitud para rechazo",
+      "http": 201,
+      "ms": 23,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "rechazar solicitud",
+      "http": 200,
+      "ms": 48,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "rechazada no se puede entregar",
+      "http": 409,
+      "ms": 20,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "crear solicitud válida",
+      "http": 201,
+      "ms": 38,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "historial de solicitudes propias",
+      "http": 200,
+      "ms": 41,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "bandeja de pendientes",
+      "http": 200,
+      "ms": 17,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "entrega sin aprobación",
+      "http": 409,
+      "ms": 25,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "aprobar solicitud",
+      "http": 200,
+      "ms": 32,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "entregar equipo",
+      "http": 200,
+      "ms": 66,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "evitar segunda entrega",
+      "http": 409,
+      "ms": 36,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "estado prestado",
+      "http": 200,
+      "ms": 8,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "evitar solicitud de equipo prestado",
+      "http": 409,
+      "ms": 12,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "préstamo visible en historial propio",
+      "http": 200,
+      "ms": 51,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "devolución con daño",
+      "http": 200,
+      "ms": 41,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "equipo en mantenimiento",
+      "http": 200,
+      "ms": 10,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "historial equipo",
+      "http": 200,
+      "ms": 12,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "crear equipo 2",
+      "http": 201,
+      "ms": 17,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "segunda solicitud",
+      "http": 201,
+      "ms": 15,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "aprobar segunda solicitud",
+      "http": 200,
+      "ms": 24,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "entregar segundo equipo",
+      "http": 200,
+      "ms": 47,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "devolución sin daños",
+      "http": 200,
+      "ms": 30,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "equipo de nuevo disponible",
+      "http": 200,
+      "ms": 12,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "crear equipo 3",
+      "http": 201,
+      "ms": 17,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "solicitud para novedad menor",
+      "http": 201,
+      "ms": 20,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "aprobar solicitud con novedad menor",
+      "http": 200,
+      "ms": 28,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "entregar equipo con novedad menor",
+      "http": 200,
+      "ms": 46,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "devolución con novedad menor",
+      "http": 200,
+      "ms": 48,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "novedad menor mantiene disponibilidad",
+      "http": 200,
+      "ms": 7,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "reporte de indicadores",
+      "http": 200,
+      "ms": 47,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "auditoría con eventos",
+      "http": 200,
+      "ms": 15,
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "historial de préstamos",
+      "http": 200,
+      "ms": 28,
+      "resultado": "APROBADO"
+    }
+  ],
+  "aprobados": 56,
+  "fallidos": 0
+}

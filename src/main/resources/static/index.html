@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153d44">
+  <meta name="description" content="Consulta, solicita y administra préstamos de equipos tecnológicos.">
+  <title>Préstamos · Equipos tecnológicos</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+      <a class="brand" href="#catalogo" data-view="catalogo" aria-label="Préstamos, inicio">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span class="brand-copy"><strong>PRÉSTAMOS</strong><small>Equipos tecnológicos</small></span>
+      </a>
+      <div class="sidebar-label">PLATAFORMA</div>
+      <nav id="main-nav" class="nav-list" aria-label="Secciones"></nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-help"><span class="help-icon" aria-hidden="true">?</span><div><strong>¿Necesitas ayuda?</strong><span>Consulta el estado de tus solicitudes desde esta plataforma.</span></div></div>
+        <div class="sidebar-foot">Gestión de equipos · 2026</div>
+      </div>
+    </aside>
+
+    <div class="main-column">
+      <header class="topbar">
+        <button class="icon-button menu-button" id="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div class="breadcrumb"><span>Plataforma</span><span aria-hidden="true">/</span><strong id="breadcrumb-current">Catálogo</strong></div>
+        <div class="topbar-actions">
+          <span id="session-pill" class="session-pill" hidden></span>
+          <button id="login-button" class="button button-primary button-small" type="button">Iniciar sesión</button>
+          <div id="user-menu" class="user-menu" hidden>
+            <div class="avatar" id="user-avatar" aria-hidden="true"></div>
+            <div class="user-copy"><strong id="user-name"></strong><small id="user-role"></small></div>
+            <button id="logout-button" class="icon-button logout-button" type="button" title="Cerrar sesión" aria-label="Cerrar sesión">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3M15 8l4 4-4 4M19 12H9"/></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main id="contenido" tabindex="-1">
+        <div id="page-content"></div>
+      </main>
+    </div>
+  </div>
+
+  <div id="toast-region" class="toast-region" role="status" aria-live="polite" aria-atomic="true"></div>
+  <dialog id="modal" class="modal" aria-labelledby="modal-title">
+    <div class="modal-head"><div><p class="eyebrow" id="modal-eyebrow">PLATAFORMA</p><h2 id="modal-title"></h2></div><button id="modal-close" class="icon-button" type="button" aria-label="Cerrar ventana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+    <div id="modal-body" class="modal-body"></div>
+  </dialog>
+  <div class="sidebar-scrim" id="sidebar-scrim" hidden></div>
+</body>
+</html>

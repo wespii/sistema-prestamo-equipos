@@ -1,0 +1,31 @@
+# Compilación y reportes Maven
+target/
+
+# H2 local y otros datos de ejecución
+data/*
+!data/.gitkeep
+*.mv.db
+*.trace.db
+
+# Python de scripts auxiliares
+__pycache__/
+*.py[cod]
+
+# IDE y archivos del sistema
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+Thumbs.db
+
+# Logs locales
+*.log
+logs/
+
+# Archivos de configuración privada locales
+.env
+.env.*
+!.env.example
