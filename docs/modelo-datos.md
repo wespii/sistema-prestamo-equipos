@@ -1,6 +1,6 @@
 # Modelo de datos lógico
 
-El esquema lo genera JPA a partir de las entidades de `src/main/java/co/edu/uniajc/prestamos/model/`. En desarrollo H2 conserva los datos en archivo; el perfil PostgreSQL usa las mismas entidades.
+El esquema lo genera JPA a partir de las entidades de `backend/src/main/java/co/edu/uniajc/prestamos/model/`. En desarrollo H2 conserva los datos en archivo; el perfil PostgreSQL usa las mismas entidades.
 
 ```mermaid
 erDiagram
@@ -39,6 +39,8 @@ erDiagram
     string nombre
     string descripcion
     string caracteristicas
+    binary imagen
+    string imagen_content_type
     string estado
     long categoria_id FK
     long version
@@ -101,4 +103,5 @@ erDiagram
 - Un equipo con historial se inactiva; no se borra. El historial de préstamos persiste tras devolverlo.
 - La aplicación comprueba fechas y disponibilidad en servicios transaccionales. El estado actual del equipo y la unicidad por solicitud sustentan la regla de un solo préstamo activo por equipo.
 - `ROL.codigo` distingue `ESTUDIANTE` y `DOCENTE`. El límite de días se calcula al crear la solicitud a partir del rol del usuario y de la configuración del ambiente; no se almacena una copia del límite en cada solicitud. Los registros históricos mantienen sus fechas originales.
+- `EQUIPO.codigo` conserva códigos anteriores. En equipos nuevos el backend genera `EQ-00001`, `EQ-00002`, etc., si no se envía uno. Las imágenes cargadas en JPEG, PNG o WebP se persisten junto con el equipo.
 - Las cuentas anteriores con `SOLICITANTE` se reasignan a `ESTUDIANTE` en la migración de inicio. Las relaciones de `USUARIO` con solicitudes y préstamos no cambian.

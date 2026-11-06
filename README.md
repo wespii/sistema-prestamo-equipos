@@ -10,10 +10,11 @@ Proyecto académico basado en el documento de requerimientos de la Institución 
 - Inicio de sesión JWT; perfiles `ADMINISTRADOR`, `ENCARGADO`, `ESTUDIANTE` y `DOCENTE`.
 
 ```text
-src/main/java/co/edu/uniajc/prestamos/   API, servicios, persistencia y seguridad
-src/main/resources/static/                interfaz web
-src/main/resources/application*.yml       configuración por ambiente
-src/test/                                 pruebas automatizadas
+frontend/                                 interfaz web HTML, CSS, JavaScript e imágenes
+backend/src/main/java/co/edu/uniajc/prestamos/ API, servicios, persistencia y seguridad
+backend/src/main/resources/                configuración por ambiente
+backend/src/test/                          pruebas automatizadas
+pom.xml                                    integra el frontend y backend en un solo JAR
 docs/                                     arquitectura, trazabilidad y plan funcional
 ```
 
@@ -23,13 +24,13 @@ Para preparar una exposición y ubicar cada pantalla en el código, consulta la 
 
 ## Ejecutar en local
 
-Requisito: **JDK 21**. El proyecto incluye Maven Wrapper, así que no hace falta instalar Maven por separado. Desde esta carpeta, en PowerShell:
+Requisito: **JDK 21**. El proyecto incluye Maven Wrapper, así que no hace falta instalar Maven por separado. El script busca JDK 21 en `JAVA_HOME`, las carpetas estándar de Windows y el `PATH`, aunque haya otra versión de Java configurada. Desde esta carpeta, en PowerShell:
 
 ```powershell
 .\scripts\iniciar-windows.ps1
 ```
 
-El script encuentra el JDK 21 preparado en este equipo o usa `JAVA_HOME` en otro equipo. También acepta `-Modo Pruebas` y `-Modo Paquete`. Si Java 21 ya está configurado, puede usarse directamente `.\mvnw.cmd spring-boot:run`. Tras empaquetar, el ejecutable queda en `target/sistema-prestamo-equipos-1.0.0.jar` y se inicia con `java -jar target/sistema-prestamo-equipos-1.0.0.jar`.
+El script busca un JDK 21 en `JAVA_HOME`, en carpetas estándar de Windows, en la instalación local del equipo o en `PATH`, y prioriza la versión 21 aunque otra versión esté activa en la terminal. También acepta `-Modo Pruebas` y `-Modo Paquete`. Si Java 21 ya está configurado, puede usarse directamente `.\mvnw.cmd spring-boot:run`. Tras empaquetar, el ejecutable queda en `target/sistema-prestamo-equipos-1.0.0.jar` y se inicia con `java -jar target/sistema-prestamo-equipos-1.0.0.jar`.
 
 Abrir [http://localhost:8080](http://localhost:8080). El perfil por defecto es `dev`: crea las tablas con JPA y usa una base H2 persistente en `./data/prestamos`. No hace falta instalar una base de datos para la demostración local. Al detener y volver a iniciar, los datos permanecen en ese archivo.
 
@@ -48,17 +49,17 @@ Estas cuentas son solo para desarrollo y demostración. Se crean como datos semi
 
 ### Perfiles y duración del préstamo
 
-Estudiantes y docentes pueden consultar el catálogo, crear solicitudes y ver únicamente sus propios historiales. El préstamo estudiantil admite **hasta 7 días** entre inicio y devolución esperada; el docente admite **hasta 30 días**. Se calcula `fechaFin - fechaInicio`: exactamente 7 o 30 días se acepta, respectivamente; 8 o 31 se rechaza. La interfaz consulta `GET /api/configuracion/prestamos` para mostrar los límites, y el backend vuelve a validarlos en cada solicitud. El administrador gestiona cuentas y equipos; el encargado decide solicitudes, entrega y recibe equipos. Estos plazos son una ampliación pedida para este proyecto y no estaban fijados por el documento original.
+Visitantes, estudiantes y docentes consultan equipos disponibles ahora o con una fecha futura estimada; no ven equipos inactivos ni en mantenimiento. El catálogo muestra la fecha prevista y una foto representativa para los cinco equipos de demostración. El administrador puede reemplazar o subir fotos JPG, PNG o WebP al editar equipos; si omite el código al crear uno, el backend genera un identificador único. El encargado y el administrador ven indicadores desplegables con los registros que forman cada cifra, incluyendo préstamos que vencen hoy o dentro de los próximos tres días (usuario, equipo y fecha). Estudiantes y docentes pueden crear solicitudes y ver únicamente sus propios historiales. El préstamo estudiantil admite **hasta 7 días** entre inicio y devolución esperada; el docente admite **hasta 30 días**. Se calcula `fechaFin - fechaInicio`: exactamente 7 o 30 días se acepta, respectivamente; 8 o 31 se rechaza. La interfaz consulta `GET /api/configuracion/prestamos` para mostrar los límites, y el backend vuelve a validarlos en cada solicitud. El administrador gestiona cuentas y equipos; el encargado decide solicitudes, registra la entrega física y recibe equipos. Al confirmar la entrega, la solicitud pasa a `ENTREGADA` y se activa el préstamo. Estos plazos son una ampliación pedida para este proyecto y no estaban fijados por el documento original.
 
 Los valores predeterminados se cambian con `APP_MAX_DIAS_ESTUDIANTE` y `APP_MAX_DIAS_DOCENTE` antes de iniciar el servidor. Ambos deben ser positivos y el máximo docente debe superar el estudiantil. En una base H2 anterior, los usuarios existentes con rol `SOLICITANTE` pasan a `ESTUDIANTE` conservando su historial; no se crean nuevas cuentas con el rol anterior. El límite se revalida al aprobar y entregar: una solicitud anterior que exceda el máximo vigente no puede avanzar y debe cancelarse para crear otra con fechas válidas.
 
 ### Flujo de demostración
 
-1. Sin iniciar sesión, consultar y filtrar el catálogo y abrir una ficha de equipo.
+1. Sin iniciar sesión, consultar y filtrar equipos disponibles y fechas estimadas de regreso; abrir una ficha de equipo.
 2. Entrar como estudiante y crear una solicitud de hasta 7 días; repetir como docente con una de hasta 30 días. Probar que 8 y 31 días, respectivamente, se rechazan.
 3. Entrar como encargado; abrir pendientes, aprobar con observación y registrar la entrega. El equipo pasa a `PRESTADO`.
 4. Devolver el equipo. En buen estado vuelve a `DISPONIBLE`; una novedad no crítica queda registrada y el equipo sigue `DISPONIBLE`; un daño lo pasa a `MANTENIMIENTO`.
-5. Entrar como administrador y consultar inventario, usuarios, indicadores, historial y auditoría.
+5. Entrar como encargado o administrador y desplegar los indicadores para ver los registros que forman cada cifra. El administrador también consulta inventario, usuarios, historial y auditoría.
 
 ## PostgreSQL
 

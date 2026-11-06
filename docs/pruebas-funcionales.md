@@ -8,22 +8,22 @@ Usar la base semilla o crear datos equivalentes. Para pruebas que alteran el inv
 
 | ID | HU | Preparación y pasos | Resultado esperado |
 | --- | --- | --- | --- |
-| PF-01 | HU-01 | Iniciar como administrador. Crear una categoría activa y un equipo con código único, nombre, descripción, características y estado disponible. | El equipo aparece en el catálogo y detalle con su categoría; el código duplicado se rechaza. |
+| PF-01 | HU-01 | Iniciar como administrador. Crear una categoría activa y un equipo disponible con nombre, descripción, características y una foto. Omitir el código y repetir indicando un código ya usado. | El equipo aparece en el inventario; sin código, el sistema genera uno único. El código duplicado se rechaza. |
 | PF-02 | HU-02 | Como administrador, cambiar nombre, descripción y características del equipo creado. | La ficha conserva el mismo ID/código y muestra los nuevos datos; otro rol no puede editarla. |
-| PF-03 | HU-03 | Abrir catálogo y filtrar por texto, categoría y estado. | Cada filtro limita el conjunto de resultados; el estado visible coincide con la disponibilidad. |
-| PF-04 | HU-04 | Abrir la ficha de un equipo disponible y luego la de uno en mantenimiento. | Se muestran código, categoría, características, estado y disponibilidad coherentes. La información restringida solo aparece al rol permitido. |
+| PF-03 | HU-03 | Abrir el catálogo como visitante, estudiante y docente; buscar por texto y categoría. | Solo aparecen equipos disponibles ahora o prestados/reservados con fecha futura estimada; el visitante y los solicitantes no pueden filtrar para mostrar mantenimiento o equipos inactivos. |
+| PF-04 | HU-04 | Abrir la ficha de un equipo disponible y luego consultar el estado de uno en mantenimiento. | La ficha muestra código, categoría, características y estado; el catálogo no lista equipos en mantenimiento ni inactivos. |
 | PF-05 | HU-05 | Como estudiante o docente, elegir equipo disponible, fecha inicial anterior a la final y motivo no vacío; enviar. | Se crea solicitud propia `PENDIENTE` con las fechas y motivo enviados; confirmación visible. |
 | PF-06 | HU-06 | Enviar fecha final igual o anterior a la inicial; repetir con equipo no disponible o campos vacíos. | Se rechazan las entradas con mensaje claro y HTTP 400/409 según el caso; no se crea solicitud inválida. Los límites propios de cada perfil se comprueban en PF-25 y PF-26. |
 | PF-07 | HU-07 | Crear solicitud pendiente propia, cancelarla y luego intentar cancelar una ajena o ya aprobada. | La propia pasa a `CANCELADA`; las otras no cambian y devuelven 403 o 409. |
 | PF-08 | HU-08 | Como solicitante, consultar mis solicitudes después de crear, cancelar y devolver préstamos. | Aparecen estados e historial propios; no se exponen solicitudes de otro usuario. |
 | PF-09 | HU-09 | Como encargado, abrir bandeja con solicitudes pendientes, aprobadas y rechazadas. | La vista de pendientes muestra solo `PENDIENTE` con datos para tomar la decisión. |
 | PF-10 | HU-10 | Como encargado, aprobar una pendiente con observación; rechazar otra. | Cada una cambia al estado correspondiente y guarda encargado, fecha y observación; la aprobación verifica disponibilidad de nuevo. |
-| PF-11 | HU-11 | Intentar entregar una pendiente y luego entregar una aprobada. | La pendiente se rechaza sin préstamo; la aprobada crea un único préstamo `ACTIVO` con fecha y encargado. |
+| PF-11 | HU-11 | Intentar entregar una pendiente y luego confirmar la entrega física de una aprobada. | La pendiente se rechaza sin préstamo; al confirmar la aprobada, la solicitud pasa a `ENTREGADA` y se crea un único préstamo `ACTIVO` con fecha y encargado. |
 | PF-12 | HU-12 | Tras PF-11, volver a consultar equipo y solicitar/aprobar/entregar otra solicitud para el mismo equipo. | El equipo figura `PRESTADO`; ninguna ruta permite un segundo préstamo activo. |
 | PF-13 | HU-13 | Como encargado, devolver el préstamo activo sin daños, consignando condición y observación. | Se guarda fecha de devolución real; préstamo `DEVUELTO`; el equipo queda `DISPONIBLE`. |
 | PF-14 | HU-14 | En otra devolución, registrar `NOVEDAD` no crítica con descripción. | La novedad se asocia al préstamo, usuario y fecha, permanece visible en historial y el equipo queda `DISPONIBLE`. |
 | PF-15 | HU-15 | Comparar devoluciones con `BUENO`, `NOVEDAD` y `DANADO`. | `BUENO` → `DEVUELTO` y `DISPONIBLE`; `NOVEDAD` → `DEVUELTO_CON_NOVEDAD` y `DISPONIBLE`; `DANADO` → `DEVUELTO_CON_NOVEDAD` y `MANTENIMIENTO`. |
-| PF-16 | HU-16 | Como administrador, consultar activos, vencidos, históricos e indicadores tras entregar y devolver. | Los contadores y listas reflejan los registros; los devueltos siguen consultables. |
+| PF-16 | HU-16 | Como encargado o administrador, consultar activos, vencidos, próximos a vencer e históricos tras entregar y devolver; desplegar cada indicador. | Los conteos y sus listas coinciden; el indicador de próximos a vencer muestra usuario, equipo y fecha límite; los devueltos siguen consultables. |
 
 ## Casos transversales y negativos
 

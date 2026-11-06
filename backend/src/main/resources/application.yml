@@ -1,0 +1,29 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+  profiles:
+    default: dev
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+server:
+  error:
+    include-message: never
+app:
+  timezone: ${APP_TIMEZONE:America/Bogota}
+  security:
+    jwt-secret: ${APP_JWT_SECRET:clave-academica-local-cambiar-en-produccion-2026}
+    jwt-hours: ${APP_JWT_HOURS:8}
+  solicitudes:
+    horas-vigencia-aprobacion: ${APP_APPROVAL_HOURS:48}
+  prestamos:
+    max-dias-estudiante: ${APP_MAX_DIAS_ESTUDIANTE:7}
+    max-dias-docente: ${APP_MAX_DIAS_DOCENTE:30}

@@ -10,8 +10,9 @@ Base local: `http://localhost:8080/api`. Las respuestas son JSON; los listados d
 | `GET /auth/me` | Datos del usuario autenticado | Autenticado |
 | `GET /configuracion/prestamos` | Límites vigentes `{maxDiasEstudiante,maxDiasDocente}` | Público |
 | `GET /categorias` | Categorías activas para catálogo | Público |
-| `GET /equipos?texto=&categoriaId=&estado=` | Catálogo con filtros opcionales | Público |
-| `GET /equipos/{id}` | Ficha, estado y disponibilidad | Público |
+| `GET /equipos?texto=&categoriaId=&estado=` | Equipos disponibles y equipos con regreso futuro estimado | Público |
+| `GET /equipos/{id}` | Ficha y estado de un equipo por ID; la interfaz solo enlaza fichas desde el catálogo filtrado | Público |
+| `GET /equipos/{id}/imagen` | Foto del equipo | Público |
 | `GET /equipos/{id}/historial` | Cambios e historial del equipo | Administrador o encargado |
 | `GET /admin/usuarios` | Lista de cuentas | Administrador |
 | `GET /admin/usuarios/{id}` | Detalle de cuenta | Administrador |
@@ -24,6 +25,8 @@ Base local: `http://localhost:8080/api`. Las respuestas son JSON; los listados d
 | `GET /admin/equipos?texto=&categoriaId=&estado=` | Inventario con filtros opcionales | Administrador |
 | `POST /admin/equipos` | Registrar equipo | Administrador |
 | `PUT /admin/equipos/{id}` | Editar o inactivar equipo | Administrador |
+| `PUT /admin/equipos/{id}/imagen` | Subir/reemplazar foto JPG, PNG o WebP (máximo 5 MB) | Administrador |
+| `DELETE /admin/equipos/{id}/imagen` | Quitar foto cargada | Administrador |
 | `POST /solicitudes` | Crear solicitud propia y validar duración máxima del perfil | Estudiante o docente |
 | `GET /solicitudes/mias` | Solicitudes e historial propios | Estudiante o docente |
 | `GET /solicitudes/{id}` | Solicitud propia o consulta del personal autorizado | Titular, encargado o administrador |
@@ -31,11 +34,12 @@ Base local: `http://localhost:8080/api`. Las respuestas son JSON; los listados d
 | `GET /solicitudes/pendientes` | Bandeja pendiente | Encargado o administrador |
 | `POST /solicitudes/{id}/cancelar` | Cancelar solicitud propia pendiente | Estudiante o docente |
 | `POST /solicitudes/{id}/decision` | Aprobar/rechazar con observación | Encargado |
-| `POST /solicitudes/{id}/entregar` | Crear préstamo de solicitud aprobada | Encargado |
+| `POST /solicitudes/{id}/entregar` | Confirmar entrega; crea un préstamo y cambia solicitud a `ENTREGADA` | Encargado |
 | `GET /prestamos?estado=&usuarioId=&equipoId=` | Préstamos, con filtros opcionales | Encargado o administrador |
 | `GET /prestamos/mios` | Préstamos propios | Estudiante o docente |
 | `POST /prestamos/{id}/devolver` | Registrar devolución y eventual novedad | Encargado |
-| `GET /reportes/resumen` | Conteos de equipos y préstamos | Administrador |
+| `GET /reportes/resumen` | Conteos de equipos, solicitudes y préstamos (incluye los que vencen en 3 días) | Encargado o administrador |
+| `GET /reportes/detalle` | Registros que forman los indicadores | Encargado o administrador |
 | `GET /auditoria` | Acciones y transiciones registradas | Administrador |
 
 No hay borrado físico de equipos ni categorías con historial: se actualiza su estado a `INACTIVO` o `activo=false`.
@@ -68,11 +72,13 @@ La respuesta `user.rol` distingue `ESTUDIANTE` y `DOCENTE`. La cuenta docente de
 {"nombre":"Portátiles","activo":true}
 ```
 
-`POST /admin/equipos`:
+`POST /admin/equipos` (`codigo` es opcional; si se omite, se genera automáticamente):
 
 ```json
-{"codigo":"EQ-100","nombre":"Portátil de práctica","descripcion":"Equipo para clase","caracteristicas":"16 GB RAM","estado":"DISPONIBLE","categoriaId":1}
+{"nombre":"Portátil de práctica","descripcion":"Equipo para clase","caracteristicas":"16 GB RAM","estado":"DISPONIBLE","categoriaId":1}
 ```
+
+La respuesta incluye `codigo` (`EQ-00001`, `EQ-00002`, ...), `fechaDisponibleEstimada` e `imagenUrl`. Las imágenes cargadas se guardan en la base junto con el equipo. Los equipos prestados usan la devolución prevista del préstamo activo; los reservados muestran el día siguiente a la fecha fin aprobada. El catálogo público incluye equipos disponibles y equipos prestados o reservados con fecha estrictamente futura. No incluye los que están inactivos, en mantenimiento o cuyo regreso ya pasó o no se puede estimar. La ficha pública aplica el mismo filtro, también si se consulta directamente por ID.
 
 `POST /solicitudes`:
 
@@ -87,6 +93,8 @@ La fecha final debe ser posterior a la inicial. La diferencia máxima es **7 dí
 ```json
 {"aprobada":true,"observacion":"Asignación confirmada"}
 ```
+
+Después de la decisión, la solicitud queda `APROBADA` hasta que el encargado confirme la entrega. Entonces pasa a `ENTREGADA`, se activa el préstamo `ACTIVO` y el equipo cambia a `PRESTADO`.
 
 `POST /prestamos/{id}/devolver`:
 

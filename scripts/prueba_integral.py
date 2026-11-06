@@ -85,7 +85,8 @@ def main() -> int:
     limits = check("límites por perfil", "GET", "/api/configuracion/prestamos",
                    verify=lambda p: p.get("maxDiasEstudiante") == 7 and p.get("maxDiasDocente") == 30)
     check("reporte sin autenticación", "GET", "/api/reportes/resumen", expected=(401,))
-    check("reporte con rol insuficiente", "GET", "/api/reportes/resumen", encargado, expected=(403,))
+    check("reporte con rol de encargado", "GET", "/api/reportes/resumen", encargado,
+          verify=lambda p: "equiposPorEstado" in p and "prestamosPorVencer" in p)
     check("docente sin acceso administrativo", "GET", "/api/admin/usuarios", docente, expected=(403,))
 
     suffix = uuid.uuid4().hex[:8]
